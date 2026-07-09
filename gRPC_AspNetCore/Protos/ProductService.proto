@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "gRPC_AspNetCore.Protos";
+
+service ProductService {
+  rpc CreateProduct(stream CreateProductRequest) returns (CreateProductReply);
+}
+
+message CreateProductRequest{
+	string title = 1;
+	string description = 2;
+	int32 price = 3;
+}
+
+message CreateProductReply{
+	int32 status = 1;
+	string message = 2;
+	int32 createdItemsCount = 3;
+}
