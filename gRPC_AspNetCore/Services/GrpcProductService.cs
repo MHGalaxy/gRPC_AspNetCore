@@ -39,6 +39,27 @@ public class GrpcProductService(GrpcContext grpcContext)
         if (product == null)
             return new GetProductByIdReply();
 
+        #region Add Response Headers (before response body sent)
+
+        Metadata headers = new Metadata()
+        {
+            { "fName" , "Mohamad Hosein" },
+            { "lName" , "Kahkeshan" },
+            { "age" , "25"},
+        };
+
+        await context.WriteResponseHeadersAsync(headers);
+
+        #endregion
+
+        #region Add Response Trailers (ater response body sent)
+
+        context.ResponseTrailers.Add("FirstName", "Mohamad Hosein");
+        context.ResponseTrailers.Add("LastName", "Kahkeshan");
+        context.ResponseTrailers.Add("SuccessMessage", "GetProdutById Successfully Done.");
+
+        #endregion
+
         return new GetProductByIdReply
         {
             CreateDate = Timestamp.FromDateTime(DateTime.SpecifyKind(product.CreateDate, DateTimeKind.Utc)),
